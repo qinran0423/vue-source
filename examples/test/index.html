@@ -8,25 +8,28 @@
   </head>
   <body>
     <div id="app">
-      <h3 >{{count}}</h3>
-      <!-- <comp :count="count" :foo="foo"/> -->
+      <h4>{{foo}}</h4>
     </div>
   </body>
   <script>
     //  Vue.component('comp',  {
     //     template: '<div>I am comp</div>'
     //   })
-    // Vue.componnet('comp', {
-    //   props: ['count', 'foo'],
-    //   template: '<div>{{count}}, {{foo}}</div>'
+    // Vue.component('comp', {
+    //   props: ['foo'],
+    //   template: '<div> {{foo}}</div>'
     // })
     const app = new Vue({
       el: "#app",
       data: {
-        count: 1,
-        foo: 'foo'
+        foo: 'foo',
+        errorobj: {}
       },
-
+      watch: {
+        foo(newval, oldVal){
+          console.log(newval);
+        }
+      },
     });
   </script>
 </html>

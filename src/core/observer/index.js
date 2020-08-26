@@ -41,9 +41,12 @@ export class Observer {
 
   constructor (value: any) {
     this.value = value
+    // 大管家: 未来当前value对象动态添加或者删除属性,通知视图更新
+    // 如果是数组,如果有数据动态加入或者移除,通知视图更新
     this.dep = new Dep()
     this.vmCount = 0
     def(value, '__ob__', this)
+    // 如果是数组
     if (Array.isArray(value)) {
       if (hasProto) {
         protoAugment(value, arrayMethods)
@@ -52,6 +55,7 @@ export class Observer {
       }
       this.observeArray(value)
     } else {
+      //  对象则遍历所有的key
       this.walk(value)
     }
   }
@@ -111,6 +115,9 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
   if (!isObject(value) || value instanceof VNode) {
     return
   }
+
+  // 每个对象配一个Observer实例
+  // 如果一个对象拥有__ob__属性,他就是响应式数据
   let ob: Observer | void
   if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
     ob = value.__ob__
@@ -121,6 +128,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
     Object.isExtensible(value) &&
     !value._isVue
   ) {
+    // 初始化需要创建一个新的ob
     ob = new Observer(value)
   }
   if (asRootData && ob) {
@@ -132,6 +140,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
 /**
  * Define a reactive property on an Object.
  */
+// 定义属性拦截
 export function defineReactive (
   obj: Object,
   key: string,
@@ -139,8 +148,9 @@ export function defineReactive (
   customSetter?: ?Function,
   shallow?: boolean
 ) {
+  // 小管家: 每个key一个
   const dep = new Dep()
-
+  
   const property = Object.getOwnPropertyDescriptor(obj, key)
   if (property && property.configurable === false) {
     return
@@ -153,15 +163,18 @@ export function defineReactive (
     val = obj[key]
   }
 
+  // 如果val是对象还会递归它
   let childOb = !shallow && observe(val)
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
+      // 依赖收集
       if (Dep.target) {
         dep.depend()
         if (childOb) {
+          // 如果存在对象嵌套,则存在子的Ob实例,需要建立大管家和当前watcher之间的关系
           childOb.dep.depend()
           if (Array.isArray(value)) {
             dependArray(value)

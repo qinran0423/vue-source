@@ -55,6 +55,7 @@ export function initState (vm: Component) {
   } else {
     observe(vm._data = {}, true /* asRootData */)
   }
+  // 初始化计算属性
   if (opts.computed) initComputed(vm, opts.computed)
   if (opts.watch && opts.watch !== nativeWatch) {
     initWatch(vm, opts.watch)
@@ -148,6 +149,7 @@ function initData (vm: Component) {
     }
   }
   // observe data
+  // 递归进行响应式处理
   observe(data, true /* asRootData */)
 }
 
