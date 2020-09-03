@@ -344,18 +344,25 @@ export function stateMixin (Vue: Class<Component>) {
   Vue.prototype.$set = set
   Vue.prototype.$delete = del
 
+  // unwatch = wm.$watch('$route', function(newVal){})
+  // wm.$watch('$route', {...})
   Vue.prototype.$watch = function (
     expOrFn: string | Function,
     cb: any,
     options?: Object
   ): Function {
     const vm: Component = this
+    // 判断cb是否是对象
     if (isPlainObject(cb)) {
+      //创建watcher
       return createWatcher(vm, expOrFn, cb, options)
     }
     options = options || {}
+    // 用户选项
     options.user = true
+    // 直接new watcher
     const watcher = new Watcher(vm, expOrFn, cb, options)
+    // 立即执行选项
     if (options.immediate) {
       try {
         cb.call(vm, watcher.value)
@@ -363,6 +370,7 @@ export function stateMixin (Vue: Class<Component>) {
         handleError(error, vm, `callback for immediate watcher "${watcher.expression}"`)
       }
     }
+    // 返回取消监听的函数
     return function unwatchFn () {
       watcher.teardown()
     }

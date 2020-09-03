@@ -217,15 +217,25 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
   ) {
     warn(`Cannot set reactive property on undefined, null, or primitive value: ${(target: any)}`)
   }
+  //  判断是否是数组
   if (Array.isArray(target) && isValidArrayIndex(key)) {
+    // 安全手段 
+    // 如果key是一个有效的索引值，就先设置length属性
+    // 如果索引值大于当前数组的length，就需要让target的length等于索引值
     target.length = Math.max(target.length, key)
+    // 替换操作
     target.splice(key, 1, val)
     return val
   }
+
+  // 对象 如果key已经在对象中，说明已经是响应式的了 直接赋值
   if (key in target && !(key in Object.prototype)) {
     target[key] = val
     return val
   }
+
+  // 新增
+  // 获取__ob__属性
   const ob = (target: any).__ob__
   if (target._isVue || (ob && ob.vmCount)) {
     process.env.NODE_ENV !== 'production' && warn(
@@ -234,11 +244,14 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     )
     return val
   }
+  // 判断ob是否存在，即判断是否是响应式的
   if (!ob) {
     target[key] = val
     return val
   }
+  // 定义响应式的数据（核心）
   defineReactive(ob.value, key, val)
+  // 立即通知组件更新
   ob.dep.notify()
   return val
 }
@@ -252,10 +265,13 @@ export function del (target: Array<any> | Object, key: any) {
   ) {
     warn(`Cannot delete reactive property on undefined, null, or primitive value: ${(target: any)}`)
   }
+  // 数组判断
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.splice(key, 1)
     return
   }
+
+  // 检测是否是ob
   const ob = (target: any).__ob__
   if (target._isVue || (ob && ob.vmCount)) {
     process.env.NODE_ENV !== 'production' && warn(
@@ -264,13 +280,16 @@ export function del (target: Array<any> | Object, key: any) {
     )
     return
   }
+  // 如果没有这一项 
   if (!hasOwn(target, key)) {
     return
   }
+  // 直接删除
   delete target[key]
   if (!ob) {
     return
   }
+  // 通知更新
   ob.dep.notify()
 }
 
