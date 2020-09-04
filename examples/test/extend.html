@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../../dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1> extend </h1>
+      <p>{{ obj.foo }}</p>
+    </div>
+  </body>
+  <script>
+    //  Vue.component('comp',  {
+    //     template: '<div>I am comp</div>'
+    //   })
+    // Vue.component('comp', {
+    //   props: ['foo'],
+    //   template: '<div> {{foo}}</div>'
+    // })
+    var Profile = Vue.extend({
+      template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p>',
+      data: function () {
+        return {
+          firstName: 'Walter',
+          lastName: 'White',
+          alias: 'Heisenberg'
+        }
+      }
+    })
+
+    new Profile().$mount('#app')
+  </script>
+</html>

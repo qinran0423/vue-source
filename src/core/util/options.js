@@ -398,8 +398,11 @@ export function mergeOptions (
     child = child.options
   }
 
+  // 格式化child的props
   normalizeProps(child, vm)
+  // 格式化child的inject
   normalizeInject(child, vm)
+  // 格式化child的directives
   normalizeDirectives(child)
 
   // Apply extends and mixins on the child options,
@@ -407,9 +410,11 @@ export function mergeOptions (
   // the result of another mergeOptions call.
   // Only merged options has the _base property.
   if (!child._base) {
+    // options.extends
     if (child.extends) {
       parent = mergeOptions(parent, child.extends, vm)
     }
+    // options.mixins
     if (child.mixins) {
       for (let i = 0, l = child.mixins.length; i < l; i++) {
         parent = mergeOptions(parent, child.mixins[i], vm)

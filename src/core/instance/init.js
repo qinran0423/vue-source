@@ -18,6 +18,7 @@ export function initMixin (Vue: Class<Component>) {
     // Vue实例
     const vm: Component = this
     // a uid
+    // 添加一个唯一的_uid
     vm._uid = uid++
 
     let startTag, endTag
@@ -29,8 +30,10 @@ export function initMixin (Vue: Class<Component>) {
     }
 
     // a flag to avoid this being observed
+    // 监听对象变化时用于过滤vm
     vm._isVue = true
     // merge options
+    // _isComponent是内部创建子组件时才会添加为true的属性
     // 合并选项
     if (options && options._isComponent) {
       // optimize internal component instantiation
@@ -98,12 +101,17 @@ export function initInternalComponent (vm: Component, options: InternalComponent
 
 export function resolveConstructorOptions (Ctor: Class<Component>) {
   let options = Ctor.options
+
+  // 有super属性，说明Ctor是通过Vue.extend()方法创建的子类
   if (Ctor.super) {
+    // 获取父级的options
     const superOptions = resolveConstructorOptions(Ctor.super)
     const cachedSuperOptions = Ctor.superOptions
+    // 如果Ctor上保存的superOptions与通过递归调用resolveConstructorOptions获取到的options不同，说明父级构造器上的options属性值改变了
     if (superOptions !== cachedSuperOptions) {
       // super option changed,
       // need to resolve new options.
+      // 更新Ctor.superOptions
       Ctor.superOptions = superOptions
       // check if there are any late-modified/attached options (#4976)
       const modifiedOptions = resolveModifiedOptions(Ctor)

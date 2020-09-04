@@ -122,6 +122,7 @@ export function createPatchFunction (backend) {
 
   let creatingElmInVPre = 0
 
+  // 递归创建节点
   function createElm (
     vnode,
     insertedVnodeQueue,
@@ -141,10 +142,12 @@ export function createPatchFunction (backend) {
     }
 
     vnode.isRootInsert = !nested // for transition enter check
+    // 自定义组件的处理
     if (createComponent(vnode, insertedVnodeQueue, parentElm, refElm)) {
       return
     }
 
+    // 下面处理保留标签
     const data = vnode.data
     const children = vnode.children
     const tag = vnode.tag
@@ -188,10 +191,13 @@ export function createPatchFunction (backend) {
           insert(parentElm, vnode.elm, refElm)
         }
       } else {
+        // 父节点创建完成，紧接着创建子节点
         createChildren(vnode, children, insertedVnodeQueue)
         if (isDef(data)) {
           invokeCreateHooks(vnode, insertedVnodeQueue)
         }
+
+        // 插入子节点
         insert(parentElm, vnode.elm, refElm)
       }
 
@@ -697,6 +703,8 @@ export function createPatchFunction (backend) {
     }
   }
 
+  // 返回patch函数，也就是看到的__patch__
+  // 下面是patch算法的核心部分
   return function patch (oldVnode, vnode, hydrating, removeOnly) {
     if (isUndef(vnode)) {
       if (isDef(oldVnode)) invokeDestroyHook(oldVnode)
@@ -706,11 +714,13 @@ export function createPatchFunction (backend) {
     let isInitialPatch = false
     const insertedVnodeQueue = []
 
+    // 老节点未定义，新增
     if (isUndef(oldVnode)) {
       // empty mount (likely as component), create new root element
       isInitialPatch = true
       createElm(vnode, insertedVnodeQueue)
     } else {
+      // 通常情况：初始化和更新逻辑都走下面
       const isRealElement = isDef(oldVnode.nodeType)
       if (!isRealElement && sameVnode(oldVnode, vnode)) {
         // patch existing root node
@@ -748,6 +758,7 @@ export function createPatchFunction (backend) {
         const parentElm = nodeOps.parentNode(oldElm)
 
         // create new node
+        // 初始化首次执行创建，整棵树的创建
         createElm(
           vnode,
           insertedVnodeQueue,
