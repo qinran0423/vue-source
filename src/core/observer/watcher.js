@@ -166,11 +166,13 @@ export default class Watcher {
    */
   update () {
     /* istanbul ignore else */
+    // 计算属性
     if (this.lazy) {
       this.dirty = true
     } else if (this.sync) {
       this.run()
     } else {
+      // watcher入队
       queueWatcher(this)
     }
   }
@@ -179,8 +181,10 @@ export default class Watcher {
    * Scheduler job interface.
    * Will be called by the scheduler.
    */
+  // watcher执行任务的函数
   run () {
     if (this.active) {
+      
       const value = this.get()
       if (
         value !== this.value ||
