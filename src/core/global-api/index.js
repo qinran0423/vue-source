@@ -52,6 +52,8 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   }
 
   Vue.options = Object.create(null)
+
+  // ['component' , 'filter', 'directives'] 三个选项的初始化
   ASSET_TYPES.forEach(type => {
     Vue.options[type + 's'] = Object.create(null)
   })
@@ -65,5 +67,6 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   initUse(Vue)
   initMixin(Vue)
   initExtend(Vue)
+  // 上面三个方法的具体实现
   initAssetRegisters(Vue)
 }

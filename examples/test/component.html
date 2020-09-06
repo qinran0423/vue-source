@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../../dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>自定义组件</h1>
+      <comp/>
+    </div>
+  </body>
+  <script>
+    Vue.component('comp', {
+      template: '<div>我是自定义组件</div>'
+    })
+    const app = new Vue({
+      el: "#app",
+    });
+  </script>
+</html>

@@ -165,7 +165,7 @@ export function createPatchFunction (backend) {
           )
         }
       }
-
+      // 创建元素
       vnode.elm = vnode.ns
         ? nodeOps.createElementNS(vnode.ns, tag)
         : nodeOps.createElement(tag, vnode)
@@ -213,19 +213,26 @@ export function createPatchFunction (backend) {
     }
   }
 
+  // 自定义组件创建
   function createComponent (vnode, insertedVnodeQueue, parentElm, refElm) {
+    // vnode.data中会有前面安装的管理钩子
     let i = vnode.data
     if (isDef(i)) {
       const isReactivated = isDef(vnode.componentInstance) && i.keepAlive
+      // 获取初始化钩子
       if (isDef(i = i.hook) && isDef(i = i.init)) {
+        // 执行组件的初始化： 实例的创建和挂载
         i(vnode, false /* hydrating */)
       }
       // after calling the init hook, if the vnode is a child component
       // it should've created a child instance and mounted it. the child
       // component also has set the placeholder vnode's elm.
       // in that case we can just return the element and be done.
+      // 下一步就是把前面挂载得到的dom插入到父节点中
       if (isDef(vnode.componentInstance)) {
+        // 初始化组件： 属性的操作
         initComponent(vnode, insertedVnodeQueue)
+        // 插入到parentElm
         insert(parentElm, vnode.elm, refElm)
         if (isTrue(isReactivated)) {
           reactivateComponent(vnode, insertedVnodeQueue, parentElm, refElm)
@@ -703,7 +710,7 @@ export function createPatchFunction (backend) {
     }
   }
 
-  // 返回patch函数，也就是看到的__patch__
+  // 返回patch函数，也就是看到的__patch__   
   // 下面是patch算法的核心部分
   return function patch (oldVnode, vnode, hydrating, removeOnly) {
     if (isUndef(vnode)) {
@@ -726,6 +733,7 @@ export function createPatchFunction (backend) {
         // patch existing root node
         patchVnode(oldVnode, vnode, insertedVnodeQueue, null, null, removeOnly)
       } else {
+        // 真是的组件
         if (isRealElement) {
           // mounting to a real element
           // check if this is server-rendered content and if we can perform
