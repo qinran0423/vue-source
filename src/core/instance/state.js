@@ -57,12 +57,16 @@ export function initState (vm: Component) {
   }
   // 初始化计算属性
   if (opts.computed) initComputed(vm, opts.computed)
+  // 初始化watch 
+  // 判断options上是否有watch
   if (opts.watch && opts.watch !== nativeWatch) {
     initWatch(vm, opts.watch)
   }
 }
 
+// 初始化props
 function initProps (vm: Component, propsOptions: Object) {
+  // 这是父组件给子组件传入的props的具体值
   const propsData = vm.$options.propsData || {}
   const props = vm._props = {}
   // cache prop keys so that future props updates can iterate using Array
@@ -98,11 +102,13 @@ function initProps (vm: Component, propsOptions: Object) {
         }
       })
     } else {
+      // 对props中的所有属性进行响应式处理
       defineReactive(props, key, value)
     }
     // static props are already proxied on the component's prototype
     // during Vue.extend(). We only need to proxy props defined at
     // instantiation here.
+    // 代理到实例上
     if (!(key in vm)) {
       proxy(vm, `_props`, key)
     }
@@ -289,7 +295,10 @@ function initMethods (vm: Component, methods: Object) {
   }
 }
 
+// watch: { num(newval, oldval) {} }
+
 function initWatch (vm: Component, watch: Object) {
+  // 遍历watch的所有属性
   for (const key in watch) {
     const handler = watch[key]
     if (Array.isArray(handler)) {
@@ -297,6 +306,7 @@ function initWatch (vm: Component, watch: Object) {
         createWatcher(vm, key, handler[i])
       }
     } else {
+      // 创建watcher
       createWatcher(vm, key, handler)
     }
   }
@@ -308,13 +318,16 @@ function createWatcher (
   handler: any,
   options?: Object
 ) {
+  // 判断是否是对象
   if (isPlainObject(handler)) {
     options = handler
     handler = handler.handler
   }
+  // 判断是否是字符串
   if (typeof handler === 'string') {
     handler = vm[handler]
   }
+
   return vm.$watch(expOrFn, handler, options)
 }
 

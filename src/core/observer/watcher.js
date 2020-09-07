@@ -90,6 +90,7 @@ export default class Watcher {
         )
       }
     }
+    // 读值
     this.value = this.lazy
       ? undefined
       : this.get()
@@ -195,10 +196,14 @@ export default class Watcher {
         this.deep
       ) {
         // set new value
+        // 保存旧的值
         const oldValue = this.value
+        // 设置新的值
         this.value = value
+        // 判断是user wathcer
         if (this.user) {
           try {
+            // 执行回调函数
             this.cb.call(this.vm, value, oldValue)
           } catch (e) {
             handleError(e, this.vm, `callback for watcher "${this.expression}"`)
