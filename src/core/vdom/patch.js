@@ -165,7 +165,7 @@ export function createPatchFunction (backend) {
           )
         }
       }
-      // 创建元素
+      // 创建原生元素
       vnode.elm = vnode.ns
         ? nodeOps.createElementNS(vnode.ns, tag)
         : nodeOps.createElement(tag, vnode)
@@ -194,6 +194,7 @@ export function createPatchFunction (backend) {
         // 父节点创建完成，紧接着创建子节点
         createChildren(vnode, children, insertedVnodeQueue)
         if (isDef(data)) {
+          // 如果有data定义，里面就会有事件相关的属性操作
           invokeCreateHooks(vnode, insertedVnodeQueue)
         }
 
@@ -315,6 +316,7 @@ export function createPatchFunction (backend) {
   }
 
   function invokeCreateHooks (vnode, insertedVnodeQueue) {
+    // 执行所有的回调
     for (let i = 0; i < cbs.create.length; ++i) {
       cbs.create[i](emptyNode, vnode)
     }
