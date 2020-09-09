@@ -9,10 +9,18 @@
   <body>
     <div id="app">
       <h1>事件处理机制</h1>
-      <p @click="onClick" >{{foo}}</p>
+      <!-- 普通事件 -->
+      <p class="pname" v-if="foo" @click="onClick" >{{foo}}</p>
+
+      <!-- 自定义事件 -->
+      <comp @myclick="onClick"/>
     </div>
   </body>
   <script>
+    Vue.component('comp', {
+      template: `<div @click="$emit('myclick')">this is comp</div>`
+    })
+
     const app = new Vue({
       el: "#app",
       data: {
@@ -24,5 +32,6 @@
         }
       },
     });
+    console.log(app.$options.render)
   </script>
 </html>
