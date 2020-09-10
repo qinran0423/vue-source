@@ -53,11 +53,14 @@ export function eventsMixin (Vue: Class<Component>) {
   const hookRE = /^hook:/
   Vue.prototype.$on = function (event: string | Array<string>, fn: Function): Component {
     const vm: Component = this
+    // 监听事件数组
     if (Array.isArray(event)) {
       for (let i = 0, l = event.length; i < l; i++) {
         vm.$on(event[i], fn)
       }
     } else {
+      // 将回调函数存入组件实例的_events数组中
+      // 对象保存,以事件的名称为key,数组为值
       (vm._events[event] || (vm._events[event] = [])).push(fn)
       // optimize hook:event cost by using a boolean flag marked at registration
       // instead of a hash lookup
@@ -70,23 +73,26 @@ export function eventsMixin (Vue: Class<Component>) {
 
   Vue.prototype.$once = function (event: string, fn: Function): Component {
     const vm: Component = this
+    // 发现一个高阶函数作为回调: 执行回调同时取消监听
     function on () {
       vm.$off(event, on)
       fn.apply(vm, arguments)
     }
     on.fn = fn
-    vm.$on(event, on)
+    vm.$on(event, on) // 将包装过的on指定为回到,它调用后自动取消监听
     return vm
   }
 
   Vue.prototype.$off = function (event?: string | Array<string>, fn?: Function): Component {
     const vm: Component = this
-    // all
+    // all 
+    // 无参数: 清空实例上全部事件监听
     if (!arguments.length) {
       vm._events = Object.create(null)
       return vm
     }
     // array of events
+    // 传一个数组:逐个取消数组中单项
     if (Array.isArray(event)) {
       for (let i = 0, l = event.length; i < l; i++) {
         vm.$off(event[i], fn)
@@ -94,21 +100,24 @@ export function eventsMixin (Vue: Class<Component>) {
       return vm
     }
     // specific event
+    // 传事件名: 取消该事件
+    // 获取回调
     const cbs = vm._events[event]
-    if (!cbs) {
+    if (!cbs) { //回调不存在
       return vm
     }
-    if (!fn) {
+    if (!fn) { // 参数2不存在,清空该事件全部回调
       vm._events[event] = null
       return vm
     }
     // specific handler
+    // 指定要取消的回调函数
     let cb
     let i = cbs.length
-    while (i--) {
+    while (i--) { // 要删除所以倒叙遍历
       cb = cbs[i]
-      if (cb === fn || cb.fn === fn) {
-        cbs.splice(i, 1)
+      if (cb === fn || cb.fn === fn) { //查找
+        cbs.splice(i, 1) //删除
         break
       }
     }
@@ -129,6 +138,7 @@ export function eventsMixin (Vue: Class<Component>) {
         )
       }
     }
+    // 获取回调函数数组
     let cbs = vm._events[event]
     if (cbs) {
       cbs = cbs.length > 1 ? toArray(cbs) : cbs
