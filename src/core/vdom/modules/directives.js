@@ -12,6 +12,7 @@ export default {
   }
 }
 
+// 自定义指令的处理
 function updateDirectives (oldVnode: VNodeWithData, vnode: VNodeWithData) {
   if (oldVnode.data.directives || vnode.data.directives) {
     _update(oldVnode, vnode)
@@ -19,7 +20,9 @@ function updateDirectives (oldVnode: VNodeWithData, vnode: VNodeWithData) {
 }
 
 function _update (oldVnode, vnode) {
+  // 第一次实例化组件，oldVnode是emptyNode
   const isCreate = oldVnode === emptyNode
+  // 销毁组件时， vnode是emptyNode
   const isDestroy = vnode === emptyNode
   const oldDirs = normalizeDirectives(oldVnode.data.directives, oldVnode.context)
   const newDirs = normalizeDirectives(vnode.data.directives, vnode.context)
@@ -33,12 +36,16 @@ function _update (oldVnode, vnode) {
     dir = newDirs[key]
     if (!oldDir) {
       // new directive, bind
+      // 新的指令，执行bind
+      // ! callHook的作用就是找出指令中对应钩子函数名称的方法，如果该方法存在，则执行
       callHook(dir, 'bind', vnode, oldVnode)
+      // 该指令在注册时设置了inserted方法，那么将指令添加到dirsWithInsert中，可以保证执行完所有指令的bind方法后再执行指令的inserted方法
       if (dir.def && dir.def.inserted) {
         dirsWithInsert.push(dir)
       }
     } else {
       // existing directive, update
+      // 指令已存在，触发update
       dir.oldValue = oldDir.value
       dir.oldArg = oldDir.arg
       callHook(dir, 'update', vnode, oldVnode)
@@ -54,6 +61,7 @@ function _update (oldVnode, vnode) {
         callHook(dirsWithInsert[i], 'inserted', vnode, oldVnode)
       }
     }
+    // 判断虚拟节点是否是一个新创建的节点
     if (isCreate) {
       mergeVNodeHook(vnode, 'insert', callInsert)
     } else {
@@ -73,6 +81,7 @@ function _update (oldVnode, vnode) {
     for (key in oldDirs) {
       if (!newDirs[key]) {
         // no longer present, unbind
+        // 指令不再存在，触发unbind
         callHook(oldDirs[key], 'unbind', oldVnode, oldVnode, isDestroy)
       }
     }

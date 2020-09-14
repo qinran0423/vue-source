@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../../dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>v-model</h1>
+      <input v-model="foo" type="text">
+      <comp v-model="foo"/>
+    </div>
+  </body>
+  <script>
+    Vue.component('comp', {
+      template: `<input type="text" :value="$attr.value" @input="$emit('input', $event.target.value)" />`
+    })
+    const app = new Vue({
+      el: "#app",
+      data: {
+        foo: 'fooooooooooooooo'
+      }
+    });
+    console.log(app.$options.render)
+  </script>
+</html>
