@@ -62,6 +62,7 @@ export default {
   },
 
   created () {
+    // 缓存已经创建过的vnode
     this.cache = Object.create(null)
     this.keys = []
   },
