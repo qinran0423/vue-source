@@ -35,6 +35,7 @@ export function initLifecycle (vm: Component) {
   // locate first non-abstract parent
   let parent = options.parent
   if (parent && !options.abstract) {
+    // 如果父级是抽象组件，那么父级就直接等于父级的父级
     while (parent.$options.abstract && parent.$parent) {
       parent = parent.$parent
     }

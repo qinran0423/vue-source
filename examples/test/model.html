@@ -8,21 +8,17 @@
   </head>
   <body>
     <div id="app">
-      <h1>v-model</h1>
+      <h4>v-model</h4>
       <input v-model="foo" type="text">
-      <comp v-model="foo"/>
     </div>
   </body>
   <script>
-    Vue.component('comp', {
-      template: `<input type="text" :value="$attr.value" @input="$emit('input', $event.target.value)" />`
-    })
     const app = new Vue({
       el: "#app",
       data: {
-        foo: 'fooooooooooooooo'
-      }
+        foo: 'foo',
+      },
     });
-    console.log(app.$options.render)
+    console.log(app.$options.render);
   </script>
 </html>
