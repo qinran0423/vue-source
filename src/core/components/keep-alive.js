@@ -50,14 +50,15 @@ function pruneCacheEntry (
 
 const patternTypes: Array<Function> = [String, RegExp, Array]
 
+// keep-alive
 export default {
   name: 'keep-alive',
-  abstract: true,
+  abstract: true, // 代表抽象组件
 
   props: {
-    include: patternTypes,
-    exclude: patternTypes,
-    max: [String, Number]
+    include: patternTypes, //表示只有匹配的组件会被缓存
+    exclude: patternTypes, //表示任何匹配的组件都不会被缓存
+    max: [String, Number] // 表示缓存的大小，因为我们缓存的Vnode对象，它也会持有DOM，当我们缓存很多的时候，会比较占用内存
   },
 
   created () {
@@ -81,6 +82,8 @@ export default {
   },
 
   render () {
+    //!<keep-alive>只处理第一个子元素，所以一般和它搭配使用的有component动态组件或者router-view
+    // 获取第一个子元素的vnode
     const slot = this.$slots.default
     const vnode: VNode = getFirstComponentChild(slot)
     const componentOptions: ?VNodeComponentOptions = vnode && vnode.componentOptions
@@ -104,14 +107,17 @@ export default {
         ? componentOptions.Ctor.cid + (componentOptions.tag ? `::${componentOptions.tag}` : '')
         : vnode.key
       if (cache[key]) {
+        // 如果命中缓存，则直接从缓存中拿vnode的组件实例，并且重新调整了key的顺序
         vnode.componentInstance = cache[key].componentInstance
         // make current key freshest
         remove(keys, key)
         keys.push(key)
       } else {
+        // 如果没有命中，则设置进缓存
         cache[key] = vnode
         keys.push(key)
         // prune oldest entry
+        // 如果配置了max并且缓存的长度超过了max,则删除第一个
         if (this.max && keys.length > parseInt(this.max)) {
           pruneCacheEntry(cache, keys[0], keys, this._vnode)
         }
