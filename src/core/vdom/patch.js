@@ -219,6 +219,7 @@ export function createPatchFunction (backend) {
     // vnode.data中会有前面安装的管理钩子
     let i = vnode.data
     if (isDef(i)) {
+      // keepalive  首次渲染 vnode.componentInstance为undefined keepAlive为true
       const isReactivated = isDef(vnode.componentInstance) && i.keepAlive
       // 获取初始化钩子
       if (isDef(i = i.hook) && isDef(i = i.init)) {

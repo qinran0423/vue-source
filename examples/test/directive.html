@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../../dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>directive</h1>
+      <p v-demo>if</p>
+      
+    </div>
+  </body>
+  <script>
+    Vue.directive('demo', {
+      bind: function(){
+        console.log('demo')
+      }
+    })
+    const app = new Vue({
+      el: "#app",
+      data: {
+        has: false
+      },
+    });
+    console.log(app.$options.render)
+  </script>
+</html>

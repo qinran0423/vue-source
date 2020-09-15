@@ -40,13 +40,16 @@ export function initExtend (Vue: GlobalAPI) {
 
 
     // 定义对象Sub, 并添加一系列的全局方法
+    // 创建一个VueComponent类
     const Sub = function VueComponent (options) {
       this._init(options)
     }
+    // 继承于vue
     Sub.prototype = Object.create(Super.prototype)
     Sub.prototype.constructor = Sub
     // cid递增
     Sub.cid = cid++
+    // 选项合并
     Sub.options = mergeOptions(
       Super.options,
       extendOptions
