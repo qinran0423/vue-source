@@ -735,7 +735,7 @@ export function createPatchFunction (backend) {
         // patch existing root node
         patchVnode(oldVnode, vnode, insertedVnodeQueue, null, null, removeOnly)
       } else {
-        // 真是的组件
+        // 真实的组件
         if (isRealElement) {
           // mounting to a real element
           // check if this is server-rendered content and if we can perform

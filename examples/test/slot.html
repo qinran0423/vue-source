@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../../dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>插槽处理机制</h1>
+      <comp>
+        <h1 slot="header">header</h1>
+        <h3>ssssss</h3>
+        <p slot="footer">footer</p>
+      </comp>
+    </div>
+  </body>
+  <script>
+     Vue.component('comp',  {
+        template: '<div class="container">' +
+  '<header><slot name="header"></slot></header>' +
+  '<main><slot>默认内容</slot></main>' +
+  '<footer><slot name="footer"></slot></footer>' +
+  '</div>',
+      })
+    const app = new Vue({
+      el: "#app",
+    });
+    console.log(app.$options.render);
+    
+  </script>
+</html>
+
+

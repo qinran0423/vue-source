@@ -76,6 +76,8 @@ export function createASTElement (
 /**
  * Convert HTML string to AST.
  */
+// compiler/index中调用的parse
+// tmplate -> ast
 export function parse (
   template: string,
   options: CompilerOptions
@@ -88,12 +90,14 @@ export function parse (
   const isReservedTag = options.isReservedTag || no
   maybeComponent = (el: ASTElement) => !!el.component || !isReservedTag(el.tag)
 
+  // 其他平台的转化函数
   transforms = pluckModuleFunction(options.modules, 'transformNode')
   preTransforms = pluckModuleFunction(options.modules, 'preTransformNode')
   postTransforms = pluckModuleFunction(options.modules, 'postTransformNode')
 
   delimiters = options.delimiters
 
+  // 配对的stack
   const stack = []
   const preserveWhitespace = options.preserveWhitespace !== false
   const whitespaceOption = options.whitespace
@@ -201,6 +205,7 @@ export function parse (
     }
   }
 
+  // 开始解析
   parseHTML(template, {
     warn,
     expectHTML: options.expectHTML,
@@ -221,6 +226,7 @@ export function parse (
         attrs = guardIESVGBug(attrs)
       }
 
+      // 生成ast对象
       let element: ASTElement = createASTElement(tag, attrs, currentParent)
       if (ns) {
         element.ns = ns
@@ -629,6 +635,7 @@ function processSlotContent (el) {
   // slot="xxx"
   const slotTarget = getBindingAttr(el, 'slot')
   if (slotTarget) {
+    // 父组件没有slot标签，有slot属性，则给el上添加slotTarget属性，来作为具名slot
     el.slotTarget = slotTarget === '""' ? '"default"' : slotTarget
     el.slotTargetDynamic = !!(el.attrsMap[':slot'] || el.attrsMap['v-bind:slot'])
     // preserve slot as an attribute for native shadow DOM compat
