@@ -9,6 +9,7 @@ function getComponentName (opts: ?VNodeComponentOptions): ?string {
   return opts && (opts.Ctor.options.name || opts.tag)
 }
 
+// 分别处理了数组、字符串、正则表达式的情况
 function matches (pattern: string | RegExp | Array<string>, name: string): boolean {
   if (Array.isArray(pattern)) {
     return pattern.indexOf(name) > -1
@@ -41,6 +42,7 @@ function pruneCacheEntry (
   current?: VNode
 ) {
   const cached = cache[key]
+  // 除了从缓存中删除外，还要判断如果要删除的缓存的组件tag不是当前渲染组件tag,也执行删除缓存的组件实例的$destroy方法
   if (cached && (!current || cached.tag !== current.tag)) {
     cached.componentInstance.$destroy()
   }

@@ -76,6 +76,7 @@ const componentVNodeHooks = {
       callHook(componentInstance, 'mounted')
     }
     if (vnode.data.keepAlive) {
+      // 如果是被<keep-alive>包裹的组件已经mounted,那么则执行queueActivatedComponent
       if (context._isMounted) {
         // vue-router#1212
         // During updates, a kept-alive component's child components may
@@ -84,6 +85,7 @@ const componentVNodeHooks = {
         // be processed after the whole patch process ended.
         queueActivatedComponent(componentInstance)
       } else {
+        // 没有mounted 执行这里
         activateChildComponent(componentInstance, true /* direct */)
       }
     }

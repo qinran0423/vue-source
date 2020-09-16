@@ -147,6 +147,7 @@ export function queueActivatedComponent (vm: Component) {
   // setting _inactive to false here so that a render function can
   // rely on checking whether it's in an inactive tree (e.g. router-view)
   vm._inactive = false
+  // 将vm实例添加到activatedChildren数组中
   activatedChildren.push(vm)
 }
 

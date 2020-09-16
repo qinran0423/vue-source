@@ -315,6 +315,7 @@ export function activateChildComponent (vm: Component, direct?: boolean) {
     for (let i = 0; i < vm.$children.length; i++) {
       activateChildComponent(vm.$children[i])
     }
+    // 执行组件的activated钩子函数，并且递归去执行他的所有的子组件的activated钩子函数
     callHook(vm, 'activated')
   }
 }
