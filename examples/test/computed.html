@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../../dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>计算属性</h1>
+      <p>{{num}}</p>
+      <p>{{double}}</p>
+    </div>
+  </body>
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        num: 1
+      },
+      computed: {
+        double() {
+          return this.num*2
+        }
+      },
+      created() {
+        setTimeout(() => {
+          this.num = 2
+        }, 1000)
+      },
+    });
+  </script>
+</html>

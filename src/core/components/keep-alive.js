@@ -70,7 +70,7 @@ export default {
   destroyed () {
     for (const key in this.cache) {
       pruneCacheEntry(this.cache, key, this.keys)
-    }
+    }   
   },
 
   mounted () {

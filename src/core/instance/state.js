@@ -176,11 +176,29 @@ const computedWatcherOptions = { lazy: true }
 
 function initComputed (vm: Component, computed: Object) {
   // $flow-disable-line
+  // 创建一个空对象
   const watchers = vm._computedWatchers = Object.create(null)
   // computed properties are just getters during SSR
   const isSSR = isServerRendering()
 
+  //!有可能这样写
+  // computed: {
+  //   fullName: {
+  //     // getter
+  //     get: function () {
+  //       return this.firstName + ' ' + this.lastName
+  //     },
+  //     // setter
+  //     set: function (newValue) {
+  //       var names = newValue.split(' ')
+  //       this.firstName = names[0]
+  //       this.lastName = names[names.length - 1]
+  //     }
+  //   }
+  // }
+  // 对computed对象进行遍历
   for (const key in computed) {
+    // 拿到计算属性中的每一个值
     const userDef = computed[key]
     const getter = typeof userDef === 'function' ? userDef : userDef.get
     if (process.env.NODE_ENV !== 'production' && getter == null) {
@@ -192,6 +210,7 @@ function initComputed (vm: Component, computed: Object) {
 
     if (!isSSR) {
       // create internal watcher for the computed property.
+      // 为每一个key创建watcher
       watchers[key] = new Watcher(
         vm,
         getter || noop,
@@ -203,6 +222,7 @@ function initComputed (vm: Component, computed: Object) {
     // component-defined computed properties are already defined on the
     // component prototype. We only need to define computed properties defined
     // at instantiation here.
+    // 判断key是不是vm的属性
     if (!(key in vm)) {
       defineComputed(vm, key, userDef)
     } else if (process.env.NODE_ENV !== 'production') {
@@ -243,6 +263,7 @@ export function defineComputed (
       )
     }
   }
+  // 给key添加geter和setter
   Object.defineProperty(target, key, sharedPropertyDefinition)
 }
 
