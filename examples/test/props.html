@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../../dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Props</h1>
+      <p>{{num}}</p>
+      <comp :num="num"/>
+    </div>
+  </body>
+  <script>
+    Vue.component('comp', {
+      props: ['num'],
+      template: '<div>我是自定义组件 {{num}}</div>',
+    })
+    const app = new Vue({
+      el: "#app",
+      data: {
+        num: 1
+      },
+      created() {
+        setTimeout(() => {
+          this.num = 2
+        }, 1000)
+      },
+    });
+
+
+
+  </script>
+</html>
