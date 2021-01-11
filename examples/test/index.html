@@ -12,24 +12,16 @@
     </div>
   </body>
   <script>
-    //  Vue.component('comp',  {
-    //     template: '<div>I am comp</div>'
-    //   })
-    // Vue.component('comp', {
-    //   props: ['foo'],
-    //   template: '<div> {{foo}}</div>'
-    // })
     const app = new Vue({
       el: "#app",
       data: {
         foo: 'foo',
-        errorobj: {}
       },
-      watch: {
-        foo(newval, oldVal){
-          console.log(newval);
-        }
-      },
+      // created() {
+      //   setTimeout(() => {
+      //     this.foo = 'kkkkkk'
+      //   }, 2000);
+      // },
     });
   </script>
 </html>

@@ -20,6 +20,7 @@ Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean
 ): Component {
+  // 获取dom元素
   el = el && query(el)
 
   /* istanbul ignore if */

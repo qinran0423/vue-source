@@ -26,6 +26,7 @@ const weexFactoryPlugin = {
 }
 
 const aliases = require('./alias')
+// 重写了resolve， 可以根据别名找到文件完整路径
 const resolve = p => {
   const base = p.split('/')[0]
   if (aliases[base]) {
@@ -120,6 +121,7 @@ const builds = {
     banner
   },
   // Runtime+compiler development build (Browser)
+  // web完整版本整体配置
   'web-full-dev': {
     entry: resolve('web/entry-runtime-with-compiler.js'),
     dest: resolve('dist/vue.js'),
