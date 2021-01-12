@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../../dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h4>{{foo}}</h4>
+    </div>
+  </body>
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        foo: 'foo',
+      },
+      // created() {
+      //   setTimeout(() => {
+      //     this.foo = 'kkkkkk'
+      //   }, 2000);
+      // },
+    });
+    console.log(app.$options.render);
+  </script>
+</html>

@@ -24,6 +24,8 @@ Vue.prototype.$mount = function (
   el = el && query(el)
 
   /* istanbul ignore if */
+  // 对el限制，Vue 不能挂在在body和html是上 
+  // document.documentElement -> html
   if (el === document.body || el === document.documentElement) {
     process.env.NODE_ENV !== 'production' && warn(
       `Do not mount Vue to <html> or <body> - mount to normal elements instead.`
@@ -35,7 +37,7 @@ Vue.prototype.$mount = function (
   // resolve template/el and convert to render function
   // el < template < render
   // render优先级最高
-
+  //  如果没有render
   if (!options.render) {
     // 没有render找template
     let template = options.template

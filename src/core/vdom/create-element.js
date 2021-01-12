@@ -47,11 +47,11 @@ export function createElement (
 // 把传入的tag, data,children这些数据创建一个vnode
 // 区分保留标签和自定义组件
 export function _createElement (
-  context: Component,
-  tag?: string | Class<Component> | Function | Object,
-  data?: VNodeData,
-  children?: any,
-  normalizationType?: number
+  context: Component, // Vnode的上下文环境， 是Component类型
+  tag?: string | Class<Component> | Function | Object, // 表示标签，可以是一个字符串，也可以是一个Component
+  data?: VNodeData, // Vnode的数据
+  children?: any, // 表示当前 VNode 的子节点
+  normalizationType?: number // 表示子节点规范的类型
 ): VNode | Array<VNode> {
   if (isDef(data) && isDef((data: any).__ob__)) {
     process.env.NODE_ENV !== 'production' && warn(

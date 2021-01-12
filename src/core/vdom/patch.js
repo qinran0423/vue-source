@@ -71,6 +71,8 @@ export function createPatchFunction (backend) {
   let i, j
   const cbs = {}
 
+  // nodeOps -> 封装了一系列DOM操作的方法
+  // modules -> 定义了一些模块的钩子函数的实现
   const { modules, nodeOps } = backend
 
   for (i = 0; i < hooks.length; ++i) {
@@ -715,6 +717,10 @@ export function createPatchFunction (backend) {
 
   // 返回patch函数，也就是看到的__patch__   
   // 下面是patch算法的核心部分
+  // oldVnode 表示旧的 VNode 节点
+  // vnode 表示执行 _render 后返回的 VNode 的节点
+  // hydrating 表示是否是服务端渲染
+  // removeOnly 是给 transition-group 用的
   return function patch (oldVnode, vnode, hydrating, removeOnly) {
     if (isUndef(vnode)) {
       if (isDef(oldVnode)) invokeDestroyHook(oldVnode)
@@ -761,6 +767,7 @@ export function createPatchFunction (backend) {
           }
           // either not server-rendered, or hydration failed.
           // create an empty node and replace it
+          // 把oldVnode转换成Vnode对象
           oldVnode = emptyNodeAt(oldVnode)
         }
 
