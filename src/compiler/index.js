@@ -12,7 +12,7 @@ export const createCompiler = createCompilerCreator(function baseCompile (
   template: string,
   options: CompilerOptions
 ): CompiledResult {
-  // 解析
+  // 解析 生成ast
   const ast = parse(template.trim(), options)
   if (options.optimize !== false) {
     optimize(ast, options)
