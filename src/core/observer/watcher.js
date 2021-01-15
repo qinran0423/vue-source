@@ -68,8 +68,8 @@ export default class Watcher {
     this.id = ++uid // uid for batching
     this.active = true
     this.dirty = this.lazy // for lazy watchers
-    this.deps = []
-    this.newDeps = []
+    this.deps = [] // 上一次添加的Dep实例数组
+    this.newDeps = [] // 新添加Dep实例数组
     this.depIds = new Set()
     this.newDepIds = new Set()
     this.expression = process.env.NODE_ENV !== 'production'
@@ -143,12 +143,13 @@ export default class Watcher {
   /**
    * Clean up for dependency collection.
    */
+  // 依赖清空
   cleanupDeps () {
     let i = this.deps.length
     while (i--) {
       const dep = this.deps[i]
       if (!this.newDepIds.has(dep.id)) {
-        dep.removeSub(this)
+        dep.removeSub(this) // 移除对dep.subs数组中Watcher的订阅
       }
     }
     let tmp = this.depIds

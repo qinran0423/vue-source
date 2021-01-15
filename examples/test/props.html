@@ -17,6 +17,9 @@
     Vue.component('comp', {
       props: ['num'],
       template: '<div>我是自定义组件 {{num}}</div>',
+      created() {
+        console.log(this);
+      }
     })
     const app = new Vue({
       el: "#app",
@@ -24,6 +27,7 @@
         num: 1
       },
       created() {
+        console.log('sss',this);
         setTimeout(() => {
           this.num = 2
         }, 1000)

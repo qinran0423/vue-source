@@ -35,6 +35,8 @@ const sharedPropertyDefinition = {
   set: noop
 }
 
+// 代理
+// target: 当前实例   sourceKey: 需要代理的值   
 export function proxy (target: Object, sourceKey: string, key: string) {
   sharedPropertyDefinition.get = function proxyGetter () {
     return this[sourceKey][key]
@@ -116,11 +118,14 @@ function initProps (vm: Component, propsOptions: Object) {
   toggleObserving(true)
 }
 
+// 数据响应式
 function initData (vm: Component) {
   let data = vm.$options.data
+  // 判断是函数还是对象
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
     : data || {}
+    // 如果不是对象
   if (!isPlainObject(data)) {
     data = {}
     process.env.NODE_ENV !== 'production' && warn(
