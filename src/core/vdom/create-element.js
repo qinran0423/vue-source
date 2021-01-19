@@ -92,6 +92,7 @@ export function _createElement (
   if (normalizationType === ALWAYS_NORMALIZE) {
     children = normalizeChildren(children)
   } else if (normalizationType === SIMPLE_NORMALIZE) {
+    // 使用场景： render函数是编译生成的
     children = simpleNormalizeChildren(children)
   }
 
