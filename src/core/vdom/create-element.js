@@ -26,7 +26,7 @@ const ALWAYS_NORMALIZE = 2
 // wrapper function for providing a more flexible interface
 // without getting yelled at by flow
 export function createElement (
-  context: Component,
+  context: Component, // vm
   tag: any,
   data: any,
   children: any,

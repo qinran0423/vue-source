@@ -116,11 +116,12 @@ export function createComponent (
   if (isUndef(Ctor)) {
     return
   }
-
+  // !为什么不知道引入vue 而要这种方式
   const baseCtor = context.$options._base
 
   // plain options object: turn it into a constructor
   if (isObject(Ctor)) {
+    //Sub
     Ctor = baseCtor.extend(Ctor)
   }
 
