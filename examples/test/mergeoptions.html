@@ -18,11 +18,23 @@
         console.log('parent created');
       }
     })
+    let minmin = {
+      created() {
+        console.log('mixinmin created')
+      },
+    }
+    let min = {
+      mixins: [minmin],
+      created() {
+        console.log('mixin created')
+      },
+    }
     const app = new Vue({
       el: "#app",
       data: {
         foo: 'foo',
       },
+      mixins: [min],
       created() {
         console.log('child created');
       },
