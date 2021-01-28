@@ -8,20 +8,27 @@
   </head>
   <body>
     <div id="app">
-      <h4>{{foo}}</h4>
     </div>
   </body>
   <script>
+    let childComp = {
+      template: '<div>{{msg}}</div>',
+      created() {
+        console.log('child created')
+      },
+      mounted() {
+        console.log('child mounted')
+      },
+      data() {
+        return {
+          msg: 'Hello Vue'
+        }
+      }
+    }
+
     const app = new Vue({
       el: "#app",
-      data: {
-        foo: 'foo',
-      },
-      // created() {
-      //   setTimeout(() => {
-      //     this.foo = 'kkkkkk'
-      //   }, 2000);
-      // },
+      render: h => h(childComp)
     });
     console.log(app.$options.render);
   </script>
