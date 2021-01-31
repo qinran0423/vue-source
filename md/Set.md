@@ -88,9 +88,47 @@ target: 数组或者是普通对象  key: 数组的下标或者对象的键值  
 
 ```
 
+ 如果key是一个有效的索引值，就先设置length属性 如果索引值大于当前数组的length，就需要让target的length等于索引值
 
+splice 替换
 
+#### target 是对象
 
+##### 如果key 在对象中
 
+此时说明这个key已经是响应式的了， 所以直接赋值 并且返回
 
+```js
+if (key in target && !(key in Object.prototype)) {
+    target[key] = val
+    return val
+  }
+```
+
+##### 如果key不在对象中说明是新增
+
+```js
+const ob = (target: any).__ob__
+if (target._isVue || (ob && ob.vmCount)) {
+    process.env.NODE_ENV !== 'production' && warn(
+        'Avoid adding reactive properties to a Vue instance or its root $data ' +
+        'at runtime - declare it upfront in the data option.'
+    )
+    return val
+}
+// 判断ob是否存在，即判断是否是响应式的
+if (!ob) {
+    target[key] = val
+    return val
+}
+// 定义响应式的数据（核心）
+defineReactive(ob.value, key, val)
+// 立即通知组件更新
+ob.dep.notify()
+return val
+```
+
+判断是否是响应式的，如果不是响应式的，对目标对象赋值，并返回
+
+如果是响应式的，则通过defineReactive 吧key添加并变成响应式，接着通知组件更新
 
