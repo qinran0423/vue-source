@@ -124,11 +124,33 @@ function createComputedGetter (key) {
 
 当出发get的时候则执行createComputedGetter方法。首先获取key对应的watcher, 
 
-看下watcher
+Dep.target 表示当前的渲染watcher
 
 ```js
- this.dirty = this.lazy 
+depend () {
+    let i = this.deps.length
+    while (i--) {
+      this.deps[i].depend()
+    }
+  }
 ```
+
+
+
+看下watcher
+
+new watcher时候 执行下面代码：
+
+```js
+
+this.dirty = this.lazy 
+
+this.value = this.lazy
+      ? undefined
+      : this.get()
+```
+
+由于this.lazy为true,此时this.value是undefined 
 
 首次进入dirty 为true
 
@@ -141,4 +163,4 @@ evaluate () {
 }
 ```
 
-value则是key 对应的函数，然后计算。紧接着就把dirty设置为false
+value则是key 对应的函数，然后计算。紧接着就把dirty设置为false。当dirty为false的时候就会value进行缓存
