@@ -168,13 +168,11 @@ export default class Watcher {
    */
   update () {
     /* istanbul ignore else */
-    // 计算属性
     if (this.lazy) {
       this.dirty = true
     } else if (this.sync) {
       this.run()
     } else {
-      // watcher入队
       queueWatcher(this)
     }
   }
