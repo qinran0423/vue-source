@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../../dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div v-for="(val,key) in arr">{{val}}</div>
+    </div>
+  </body>
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        arr: [],
+      },
+      created() {
+        this.arr.push(1)
+      },
+    });
+
+    // const arrProto = Array.prototype
+    // const arrMethods = Object.create(arrProto)
+
+    // const methodsToPatch = [
+    //   'push',
+    //   'pop',
+    //   'shift'
+    // ]
+
+    // let arr = []
+    // methodsToPatch.forEach(function(method) {
+    //   const original = arrProto[method]
+    //   console.log(original);
+    //   Object.defineProperty(arrMethods, method, {
+    //     enumerable: true,
+    //     writable: true,
+    //     configurable: true,
+    //     value: function(...args) {
+    //       const result = original.apply(this, args)
+    //       /*做一些事情*/
+    //       return result
+    //     }
+    //   })
+    // })
+    // arr.__proto__ = arrMethods
+
+    // arr.push('xxxxx')
+    // console.log(arr);
+
+
+  </script>
+</html>
