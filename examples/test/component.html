@@ -8,16 +8,25 @@
   </head>
   <body>
     <div id="app">
-      <h1>自定义组件</h1>
-      <comp/>
+    
+      <h1>{{foo}}}</h1>
+      <a v-if="show" :foo="foo"/>
+      <b v-if="show" :foo="foo"/>
     </div>
   </body>
   <script>
-    Vue.component('comp', {
-      template: '<div>我是自定义组件</div>',
+    Vue.component('a', {
+      template: '<div>我是a组件</div>',
+    })
+    Vue.component('b', {
+      template: '<div>我是b组件</div>',
     })
     const app = new Vue({
       el: "#app",
+      data: {
+        foo: 'foo',
+        show: true
+      }
     });
   </script>
 </html>

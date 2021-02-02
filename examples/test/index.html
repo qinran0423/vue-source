@@ -9,6 +9,7 @@
   <body>
     <div id="app">
       <h4>{{foo}}</h4>
+      <h5>{{bar}}</h5>
     </div>
   </body>
   <script>
@@ -16,12 +17,13 @@
       el: "#app",
       data: {
         foo: 'foo',
+        bar: 'bar'
       },
-      // created() {
-      //   setTimeout(() => {
-      //     this.foo = 'kkkkkk'
-      //   }, 2000);
-      // },
+      created() {
+        setTimeout(() => {
+          this.foo = 'kkkkkk'
+        }, 2000);
+      },
     });
   </script>
 </html>

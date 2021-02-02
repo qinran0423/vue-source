@@ -22,7 +22,6 @@ export default class Dep {
 
   addSub (sub: Watcher) {
     this.subs.push(sub)
-    
   }
 
   removeSub (sub: Watcher) {
