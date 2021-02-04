@@ -15,16 +15,25 @@
     const app = new Vue({
       el: "#app",
       data: {
-        num: 1,
+        // num: 1,
+        obj: {
+          age: 20
+        }
       },
       watch: {
-        num(newval, oldVal){
-          console.log(newval);
+        // num(newval, oldVal){
+        //   console.log(newval, oldVal);
+        // },
+        obj: {
+          deep: true,
+          handler(newval, oldval) {
+            console.log(newval, oldval);
+          }
         }
       },
       created() {
         setTimeout(() => {
-          this.num ++
+          this.obj.age ++
         }, 1000)
       }
     });
