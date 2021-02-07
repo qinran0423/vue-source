@@ -10,9 +10,19 @@
     <div id="app">
       <h4>v-model</h4>
       <input v-model="foo" type="text">
+      {{foo}}
+
+      <comp v-model="foo"/>
     </div>
   </body>
   <script>
+    Vue.component('comp', {
+      template: `
+        <input type="text" :value="$attrs.value"
+          @input="$emit('input', $event.target.value)"
+        />
+      `,
+    })
     const app = new Vue({
       el: "#app",
       data: {
