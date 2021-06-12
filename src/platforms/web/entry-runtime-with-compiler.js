@@ -3,7 +3,7 @@
 import config from 'core/config'
 import { warn, cached } from 'core/util/index'
 import { mark, measure } from 'core/util/perf'
-
+  
 import Vue from './runtime/index'
 import { query } from './util/index'
 import { compileToFunctions } from './compiler/index'
@@ -14,7 +14,7 @@ const idToTemplate = cached(id => {
   return el && el.innerHTML
 })
 
-// web平台需要拓展$mount
+// web平台需要拓展$mount 每个平台对$mount处理方式不一样
 const mount = Vue.prototype.$mount
 Vue.prototype.$mount = function (
   el?: string | Element,
